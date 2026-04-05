@@ -114,7 +114,7 @@ class InfiniteSampler(torch.utils.data.Sampler):
         assert num_replicas > 0
         assert 0 <= rank < num_replicas
         assert 0 <= window_size <= 1
-        super().__init__(dataset)
+        super().__init__()
         self.dataset = dataset
         self.rank = rank
         self.num_replicas = num_replicas
@@ -150,7 +150,7 @@ def params_and_buffers(module):
 
 def named_params_and_buffers(module):
     assert isinstance(module, torch.nn.Module)
-    return list(module.named_parameters()) + list(module.named_buffers())
+    return list(module.named_parameters()) + list(module.named_buffers(persistent_only=True))
 
 def copy_params_and_buffers(src_module, dst_module, require_all=False):
     assert isinstance(src_module, torch.nn.Module)
